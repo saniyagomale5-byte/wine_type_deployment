@@ -9,8 +9,9 @@ Original file is located at
 
 import streamlit as st
 import joblib
+import pandas as pd
 
-drive.mount("dtc_model.pkl")
+model = joblib.load("dtc_model.pkl")
 
 st.title("wine type prediction !")
 
@@ -28,20 +29,20 @@ sulphates= st.number_input("sulphates")
 alcohol= st.number_input("alcohol")
 quality= st.number_input("quality")
 
-input_data = pd.DataFrame({
-    "fixed_acidity": [fixed_acidity],
-    "volatile_acidity": [volatile_acidity],
-    "citric_acid": [citric_acid],
-    "residual_sugar": [residual_sugar],
-    "chlorides": [chlorides],
-    "free_sulfur_dioxide": [free_sulfur_dioxide],
-    "total_sulfur_dioxide": [total_sulfur_dioxide],
-    "density": [density],
-    "pH": [pH],
-    "sulphates": [sulphates],
-    "alcohol": [alcohol],
-    "quality": [quality]
-})
+input_data = pd.DataFrame([[
+    fixed_acidity,
+    volatile_acidity,
+    citric_acid,
+    residual_sugar,
+    chlorides,
+    free_sulfur_dioxide,
+    total_sulfur_dioxide,
+    density,
+    pH,
+    sulphates,
+    alcohol,
+    quality
+]], columns=model.feature_names_in_)
 
 if st.button("predict"):
     prediction = model.predict(input_data)[0]
